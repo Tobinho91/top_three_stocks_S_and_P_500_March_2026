@@ -48,8 +48,11 @@ print(f"Fetched data for {len(dates)} business days")
 # Step 2: Create line chart
 fig, ax = plt.subplots(figsize=(12, 7))
 
+# Plot using integer indices instead of datetime objects
+x_indices = np.arange(len(dates))
+
 for ticker in stocks.keys():
-    ax.plot(dates, closing_prices[ticker],
+    ax.plot(x_indices, closing_prices[ticker],
             label=stocks[ticker]['name'],
             color=stocks[ticker]['color'],
             linewidth=2,
