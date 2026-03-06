@@ -76,14 +76,23 @@ png_path = output_dir / 'stock_chart.png'
 plt.savefig(png_path, dpi=150, bbox_inches='tight')
 print(f"Saved chart to {png_path}")
 
-# Step 3: Create PDF with chart and table
+# Step 3: Create PDF with chart, title page, and table
 pdf_path = output_dir / 'stock_report.pdf'
 with PdfPages(pdf_path) as pdf:
     # Page 1: Chart
     pdf.savefig(fig, bbox_inches='tight')
     plt.close(fig)
 
-    # Page 2: Data table
+    # Page 2: Title/Header
+    fig, ax = plt.subplots(figsize=(12, 7))
+    ax.axis('off')
+    ax.text(0.5, 0.5, 'Stock Data - Last 10 Business Days',
+            ha='center', va='center', fontsize=20, fontweight='bold',
+            transform=ax.transAxes)
+    pdf.savefig(fig, bbox_inches='tight')
+    plt.close(fig)
+
+    # Page 3: Data table
     fig, ax = plt.subplots(figsize=(12, 7))
     ax.axis('tight')
     ax.axis('off')
@@ -119,7 +128,6 @@ with PdfPages(pdf_path) as pdf:
             else:
                 table[(i, j)].set_facecolor('#ffffff')
 
-    ax.set_title('Stock Data - Last 10 Business Days', fontsize=16, fontweight='bold', pad=20)
     pdf.savefig(fig, bbox_inches='tight')
     plt.close(fig)
 
