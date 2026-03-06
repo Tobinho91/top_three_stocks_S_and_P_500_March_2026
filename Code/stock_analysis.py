@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import datetime
 from pathlib import Path
+import numpy as np
 
 # Define stocks and their colors
 stocks = {
@@ -33,13 +34,14 @@ for ticker in data:
     if len(data[ticker]) >= 10:
         data[ticker] = data[ticker].iloc[-10:]
 
-# Extract closing prices
+# Extract closing prices and dates
 closing_prices = {}
 dates = None
 for ticker in stocks.keys():
-    closing_prices[ticker] = data[ticker]['Close'].values
+    # Convert to native Python floats using item() for each value
+    closing_prices[ticker] = [v.item() for v in data[ticker]['Close'].values]
     if dates is None:
-        dates = data[ticker].index
+        dates = list(data[ticker].index)
 
 print(f"Fetched data for {len(dates)} business days")
 
